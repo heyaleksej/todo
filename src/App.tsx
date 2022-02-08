@@ -57,8 +57,7 @@ function App() {
         //     setTasks([...tasks])
         // }
 
-        setTasks(tasks.map(m=>m.id===id? {...m,isDone:isDone}:m))
-
+setTasks(tasks.map((m)=> m.id === id ? {...m, isDone:isDone}:m))
     }
 
 
@@ -73,6 +72,7 @@ function App() {
                       // newTaskTitle={newTaskTitle}
                       // onKeyPress={onKeyPress}
                       changeStatus={changeStatus}
+                      filter={filter}
 
 
 
