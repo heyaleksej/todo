@@ -4,16 +4,15 @@ import s from './Todolist.module.css'
 import {TodoMap} from "./TodoMap";
 
 export type PropsType = {
+    todolistID: string
     title: string
-    // newTaskTitle: string
     tasks: Array<TaskType>
-    removeTasks: (id: string) => void
-    addTasks: (title: string) => void
-    // onChangeTaskTitle: (e: ChangeEvent<HTMLInputElement>) => void
-    changeFilter: (value: FilterValuesType) => void
-    // onKeyPress:(e:KeyboardEvent<HTMLInputElement>)=>void
-    changeStatus: (isDone: boolean, id: string) => void
+    removeTasks: (id: string, todolistID: string) => void
+    addTasks: (title: string, todolistID: string) => void
+    changeFilter: (todolistID: string, value: FilterValuesType) => void
+    changeStatus: (isDone: boolean, id: string, todolistID: string) => void
     filter: FilterValuesType
+    removeTodolist: (todolistID:string) => void
 
 }
 
@@ -31,25 +30,21 @@ export function Todolist(props: PropsType) {
     let [newTaskTitle, setNewTaskTitle] = useState('')
     let [error, setError] = useState(false)
 
-    // const oNAllClickHandler=()=>changeFilter('all')
-    // const oNActiveClickHandler=()=>changeFilter('active')
-    // const oNCompletedClickHandler=()=>changeFilter('completed')
-    //
-    const onClickFilterHandler = (value: FilterValuesType) => {
-        props.changeFilter(value)
+    const onClickFilterHandler = (todolistID: string, value: FilterValuesType) => {
+        props.changeFilter(todolistID,value)
     }
 
     const addTaskHandler = () => {
         if (newTaskTitle.trim() !== '') {
-            props.addTasks(newTaskTitle.trim())
+            props.addTasks(newTaskTitle.trim(), props.todolistID)
             setNewTaskTitle('')
         } else {
             setError(true)
         }
     }
 
-    const removeTaskHandler = (tID: string) => {
-        props.removeTasks(tID)
+    const removeTaskHandler = (id: string, todolistID: string) => {
+        props.removeTasks(id, todolistID)
     }
 
     const onChangeTaskTitle = (e: ChangeEvent<HTMLInputElement>) => {
@@ -64,14 +59,20 @@ export function Todolist(props: PropsType) {
         }
     }
 
-    const onChangeStatusHandler = (e: ChangeEvent<HTMLInputElement>, id: string) => {
-        props.changeStatus(e.currentTarget.checked, id)
+    const onChangeStatusHandler = (e: ChangeEvent<HTMLInputElement>, id: string, todolistID: string) => {
+        props.changeStatus(e.currentTarget.checked, id, todolistID)
+    }
+    const removeTodolistHandler = (todolistID: string) => {
+        props.removeTodolist(todolistID)
     }
 
 
     return (
+
         <div>
-            <h3>{props.title}</h3>
+
+
+            <h3>{props.title} <button onClick={()=>{removeTodolistHandler(props.todolistID)}}>x</button> </h3>
             <div>
                 <input value={newTaskTitle}
                        onChange={onChangeTaskTitle}
@@ -82,18 +83,20 @@ export function Todolist(props: PropsType) {
                 <button onClick={addTaskHandler}>+</button>
                 {error && <div className={s.errorMessage}>Title is requared!</div>}
             </div>
-            <TodoMap tasks={props.tasks} onChangeStatusHandler={onChangeStatusHandler} removeTaskHandler={removeTaskHandler}/>
+            <TodoMap tasks={props.tasks} onChangeStatusHandler={onChangeStatusHandler}
+                     removeTaskHandler={removeTaskHandler} todolistID ={props.todolistID}
+            />
             <div>
                 <button className={props.filter === 'all' ? s.activeFilter : ''} onClick={() => {
-                    onClickFilterHandler('all')
+                    onClickFilterHandler(props.todolistID,'all')
                 }}>ALL
                 </button>
                 <button className={props.filter === 'active' ? s.activeFilter : ''} onClick={() => {
-                    onClickFilterHandler('active')
+                    onClickFilterHandler(props.todolistID,'active')
                 }}>Active
                 </button>
                 <button className={props.filter === 'completed' ? s.activeFilter : ''} onClick={() => {
-                    onClickFilterHandler('completed')
+                    onClickFilterHandler(props.todolistID,'completed')
                 }}>Completed
                 </button>
             </div>
