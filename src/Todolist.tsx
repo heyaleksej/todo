@@ -1,7 +1,8 @@
 import {FilterValuesType} from "./App";
-import {ChangeEvent, KeyboardEvent, useState} from "react";
+import React, {ChangeEvent} from "react";
 import s from './Todolist.module.css'
 import {TodoMap} from "./TodoMap";
+import { AddItemForm } from "./AddItemForm";
 
 export type PropsType = {
     todolistID: string
@@ -12,7 +13,7 @@ export type PropsType = {
     changeFilter: (todolistID: string, value: FilterValuesType) => void
     changeStatus: (isDone: boolean, id: string, todolistID: string) => void
     filter: FilterValuesType
-    removeTodolist: (todolistID:string) => void
+    removeTodolist: (todolistID: string) => void
 
 }
 
@@ -27,36 +28,12 @@ export type TaskType = {
 export function Todolist(props: PropsType) {
 
 
-    let [newTaskTitle, setNewTaskTitle] = useState('')
-    let [error, setError] = useState(false)
-
     const onClickFilterHandler = (todolistID: string, value: FilterValuesType) => {
-        props.changeFilter(todolistID,value)
-    }
-
-    const addTaskHandler = () => {
-        if (newTaskTitle.trim() !== '') {
-            props.addTasks(newTaskTitle.trim(), props.todolistID)
-            setNewTaskTitle('')
-        } else {
-            setError(true)
-        }
+        props.changeFilter(todolistID, value)
     }
 
     const removeTaskHandler = (id: string, todolistID: string) => {
         props.removeTasks(id, todolistID)
-    }
-
-    const onChangeTaskTitle = (e: ChangeEvent<HTMLInputElement>) => {
-        setError(false)
-        setNewTaskTitle(e.currentTarget.value)
-
-    }
-
-    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Enter') {
-            addTaskHandler()
-        }
     }
 
     const onChangeStatusHandler = (e: ChangeEvent<HTMLInputElement>, id: string, todolistID: string) => {
@@ -66,40 +43,42 @@ export function Todolist(props: PropsType) {
         props.removeTodolist(todolistID)
     }
 
+    const addTaskObertka =(title:string)=>{
+        props.addTasks(title, props.todolistID)
+    }
+
 
     return (
 
         <div>
 
 
-            <h3>{props.title} <button onClick={()=>{removeTodolistHandler(props.todolistID)}}>x</button> </h3>
-            <div>
-                <input value={newTaskTitle}
-                       onChange={onChangeTaskTitle}
-                       onKeyPress={onKeyPressHandler}
-                       className={error ? s.error : ''}
+            <h3>{props.title}
+                <button onClick={() => {
+                    removeTodolistHandler(props.todolistID)
+                }}>x
+                </button>
 
-                />
-                <button onClick={addTaskHandler}>+</button>
-                {error && <div className={s.errorMessage}>Title is requared!</div>}
-            </div>
+            </h3>
+            <AddItemForm addItem={addTaskObertka}/>
             <TodoMap tasks={props.tasks} onChangeStatusHandler={onChangeStatusHandler}
-                     removeTaskHandler={removeTaskHandler} todolistID ={props.todolistID}
+                     removeTaskHandler={removeTaskHandler} todolistID={props.todolistID}
             />
             <div>
                 <button className={props.filter === 'all' ? s.activeFilter : ''} onClick={() => {
-                    onClickFilterHandler(props.todolistID,'all')
-                }}>ALL
+                    onClickFilterHandler(props.todolistID, 'all')
+                }}>All
                 </button>
                 <button className={props.filter === 'active' ? s.activeFilter : ''} onClick={() => {
-                    onClickFilterHandler(props.todolistID,'active')
+                    onClickFilterHandler(props.todolistID, 'active')
                 }}>Active
                 </button>
                 <button className={props.filter === 'completed' ? s.activeFilter : ''} onClick={() => {
-                    onClickFilterHandler(props.todolistID,'completed')
+                    onClickFilterHandler(props.todolistID, 'completed')
                 }}>Completed
                 </button>
             </div>
         </div>
     )
 }
+
