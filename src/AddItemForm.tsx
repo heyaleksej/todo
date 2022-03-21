@@ -1,11 +1,15 @@
 import {ChangeEvent, KeyboardEvent, useState} from "react";
 import s from "./Todolist.module.css";
+import {IconButton, TextField} from "@material-ui/core";
+import {PlaylistAdd} from "@material-ui/icons";
+
 
 type AddItemFormPropsType = {
     addItem: (title: string) => void
 }
 
 export function AddItemForm(props: AddItemFormPropsType) {
+
 
     const addTaskHandler = () => {
         if (newTaskTitle.trim() !== '') {
@@ -36,14 +40,22 @@ export function AddItemForm(props: AddItemFormPropsType) {
     return (
 
         <div>
-            <input value={newTaskTitle}
-                   onChange={onChangeTaskTitle}
-                   onKeyPress={onKeyPressHandler}
-                   className={error ? s.error : ''}
+            <TextField
+                variant={'outlined'}
+                label={!error ? 'type': 'Title is requared!'}
+                value={newTaskTitle}
+                onChange={onChangeTaskTitle}
+                onKeyPress={onKeyPressHandler}
+                error={!!error}
+                helperText={error}
+
 
             />
-            <button onClick={addTaskHandler}>+</button>
-            {error && <div className={s.errorMessage}>Title is requared!</div>}
+            <IconButton onClick={addTaskHandler} color='primary'>
+                <PlaylistAdd/>
+            </IconButton>
+            {/*{error && <div className={s.errorMessage}>Title is requared!</div>}*/}
         </div>
     )
+
 }
