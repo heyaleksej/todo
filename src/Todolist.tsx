@@ -15,7 +15,7 @@ export type PropsType = {
     removeTasks: (id: string, todolistID: string) => void
     addTasks: (title: string, todolistID: string) => void
     changeFilter: (todolistID: string, value: FilterValuesType) => void
-    changeStatus: (isDone: boolean, id: string, todolistID: string) => void
+    changeStatus: (id: string, isDone: boolean, todolistID: string) => void
     changeTaskTitle: (todolistID: string, id: string, newTitle: string) => void
     filter: FilterValuesType
     removeTodolist: (todolistID: string) => void
@@ -42,17 +42,13 @@ export function Todolist(props: PropsType) {
         props.removeTasks(id, todolistID)
     }
 
-    // const onChangeStatusHandler = (e: ChangeEvent<HTMLInputElement>, id: string, todolistID: string) => {
-    //     props.changeStatus(e.currentTarget.checked, id, todolistID)
-    // }
-
 
     const removeTodolistHandler = (todolistID: string) => {
         props.removeTodolist(todolistID)
     }
 
-    const onChangeStatusHandler = (e: ChangeEvent<HTMLInputElement>, id: string, todolistID: string) => {
-        props.changeStatus(e.currentTarget.checked, id, todolistID)
+    const onChangeStatusHandler = (id: string, e: ChangeEvent<HTMLInputElement>, todolistID: string) => {
+        props.changeStatus(id, e.currentTarget.checked, todolistID)
     }
 
     const onChangeTaskTitleObertka = (id: string, newTitle: string) => {
@@ -65,7 +61,7 @@ export function Todolist(props: PropsType) {
     }
 
     const addTaskObertka = (title: string) => {
-        props.addTasks(title, props.todolistID)
+        props.addTasks(title,props.todolistID)
     }
 
 
@@ -85,9 +81,10 @@ export function Todolist(props: PropsType) {
                 </IconButton>
 
             </h3>
+            <div>
             <AddItemForm addItem={addTaskObertka}/>
+            </div>
             <TodoMap tasks={props.tasks}
-                     changeStatus={props.changeStatus}
                      onChangeTaskTitleObertka={onChangeTaskTitleObertka}
                      removeTaskHandler={removeTaskHandler}
                      todolistID={props.todolistID}

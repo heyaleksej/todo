@@ -6,7 +6,7 @@ import {
     todolistsReducer
 } from './todolists-reducer';
 import {v1} from 'uuid';
-import {FilterValuesType, TodolistsType} from '../App';
+import {FilterValuesType, TodolistsType} from '../AppWithReducers';
 
 test('correct todolist should be removed', () => {
     let todolistId1 = v1();
@@ -56,7 +56,7 @@ test('correct todolist should change its name', () => {
     //     title: newTodolistTitle
     // };
 
-    const endState = todolistsReducer(startState, changeTodolistTitleAC(newTodolistTitle,todolistId2));
+    const endState = todolistsReducer(startState, changeTodolistTitleAC(todolistId2, newTodolistTitle));
 
     expect(endState[0].title).toBe("What to learn");
     expect(endState[1].title).toBe(newTodolistTitle);
@@ -79,7 +79,7 @@ test('correct filter of todolist should be changed', () => {
     //     filter: newFilter
     // };
 
-    const endState = todolistsReducer(startState,changeFilterAC(newFilter,todolistId2) );
+    const endState = todolistsReducer(startState,changeFilterAC(todolistId2, newFilter,) );
 
     expect(endState[0].filter).toBe("all");
     expect(endState[1].filter).toBe(newFilter);

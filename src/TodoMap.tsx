@@ -8,23 +8,23 @@ import {Delete} from '@material-ui/icons';
 export type PropsType = {
     todolistID: string
     tasks: Array<TaskType>
-    changeStatus: (isDone: boolean, id: string, todolistID: string) => void
-    onChangeStatusHandler: (e: ChangeEvent<HTMLInputElement>, id: string, todolistID: string) => void
+    onChangeStatusHandler: (id: string, e: ChangeEvent<HTMLInputElement>, todolistID: string) => void
     onChangeTaskTitleObertka: (id: string, newTitle: string) => void
     removeTaskHandler: (id: string, todolistID: string) => void
 }
 
 export const TodoMap = (props: PropsType) => {
 
+
     return (
         <div>
             {props.tasks.map((t) => {
 
-                return <div key={t.id} className={t.isDone ? s.isDone : ''}>
+                return <div key={t.id}>
                     <Checkbox
                         color="default"
                         checked={t.isDone}
-                        onChange={(e) => props.onChangeStatusHandler(e, t.id, props.todolistID)}
+                        onChange={(e) => props.onChangeStatusHandler(t.id, e, props.todolistID)}
 
                     />
                     <EditableSpan title={t.title} onChange={(newTitle) => {

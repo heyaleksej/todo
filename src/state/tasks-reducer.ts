@@ -1,14 +1,13 @@
-import {TasksTodolistType, TodolistsType} from "../App";
+import {TasksTodolistType, TodolistsType} from "../AppWithReducers";
 import {v1} from "uuid";
-import {AddTodolistACType, RemoveTodolistACType} from "./todolists-reducer";
+import {addTodolistACType, removeTodolistACType} from "./todolists-reducer";
 
-type ActionTypes =
-    removeTaskACType
+type ActionTypes = removeTaskACType
     | addTaskACType
     | changeTaskStatusACType
     | changeTitleStatusACType
-    | AddTodolistACType
-    | RemoveTodolistACType
+    | addTodolistACType
+    | removeTodolistACType
 
 
 type removeTaskACType = ReturnType<typeof removeTaskAC>
@@ -49,11 +48,11 @@ export const changeTaskStatusAC = (taskId: string, value: boolean, todolistId: s
     } as const
 }
 
-export const changeTaskTitleAC = (taskId: string, title: string, todolistId: string) => {
+export const changeTaskTitleAC = (todolistId: string, taskId: string, title: string) => {
     return {
         type: 'CHANGE-TITLE',
         payload: {
-            taskId, title, todolistId
+            todolistId, taskId, title,
         }
     } as const
 }
@@ -76,38 +75,63 @@ export const tasksReducer = (state: TasksTodolistType, action: ActionTypes): Tas
             return newState
         }
         case 'CHANGE-STATUS': {
-            let newState = {...state}
+            // let newState = {...state}
+            //
+            // let tasks = newState[action.payload.todolistId]
+            // let task = tasks.find(f => f.id === action.payload.taskId)
+            // if (task) {
+            //     task.isDone = action.payload.value
+            //
+            //     newState[action.payload.todolistId] = {...tasks}
+            // }
+            // return newState
 
-            let tasks = newState[action.payload.todolistId]
-            let task = tasks.find(f => f.id === action.payload.taskId)
+            const stateCopy = {...state};
+
+            let tasks = stateCopy[action.payload.todolistId];
+            // найдём нужную таску:
+            let task = tasks.find(t => t.id === action.payload.taskId);
+            //изменим таску, если она нашлась
             if (task) {
-                task.isDone = action.payload.value
-
-                newState[action.payload.todolistId] = {...tasks}
+                task.isDone = action.payload.value;
             }
-            return newState
+            return stateCopy;
 
         }
 
 
         case "CHANGE-TITLE": {
-            let newState = {...state}
-            let tasks = newState[action.payload.todolistId].map(m => m.id === action.payload.taskId ? {
-                ...m,
-                title: action.payload.title
-            } : m)
-            newState[action.payload.todolistId] = {...tasks}
-            return newState
+            // let newState = {...state}
+            // let tasks = newState[action.payload.todolistId].map(m => m.id === action.payload.taskId ? {
+            //     ...m,
+            //     title: action.payload.title
+            // } : m)
+            // newState[action.payload.todolistId] = {...tasks}
+            // return {...state, [action.payload.todolistId]: state[action.payload.todolistId].map(m => m.id === action.payload.taskId ? {
+            //         ...m,
+            //         title: action.payload.title} : m)
+            // }}
+
+            const stateCopy = {...state};
+
+            let tasks = stateCopy[action.payload.todolistId];
+            // найдём нужную таску:
+            let task = tasks.find(t => t.id === action.payload.taskId);
+            //изменим таску, если она нашлась
+            if (task) {
+                task.title = action.payload.title;
+            }
+            return stateCopy;
         }
 
         case 'ADD-TODOLIST': {
-            let newState = {...state}
-            newState[action.payload.todolistId] = []
-            return newState
+            // let newState = {...state}
+            // newState[action.payload.todolistId] = []
+            return {...state, [action.payload.todolistId]: []}
 
 
         }
-        case "REMOVE-TODOLIST":{
+        case "REMOVE-TODOLIST": {
             let newState = {...state}
             delete newState[action.payload.todolistId]
             return newState
