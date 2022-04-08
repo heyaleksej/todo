@@ -1,5 +1,4 @@
-import {ChangeEvent, KeyboardEvent, useState} from "react";
-import s from "./Todolist.module.css";
+import React, {ChangeEvent, KeyboardEvent, useCallback, useState} from "react";
 import {IconButton, TextField} from "@material-ui/core";
 import {PlaylistAdd} from "@material-ui/icons";
 
@@ -8,8 +7,12 @@ type AddItemFormPropsType = {
     addItem: (title: string) => void
 }
 
-export function AddItemForm(props: AddItemFormPropsType) {
+export const AddItemForm = React.memo( (props: AddItemFormPropsType)=> {
 
+    console.log('AddItemForm')
+
+    let [newTaskTitle, setNewTaskTitle] = useState('')
+    let [error, setError] = useState(false)
 
     const addTaskHandler = () => {
         if (newTaskTitle.trim() !== '') {
@@ -20,9 +23,6 @@ export function AddItemForm(props: AddItemFormPropsType) {
         }
     }
 
-
-    let [newTaskTitle, setNewTaskTitle] = useState('')
-    let [error, setError] = useState(false)
 
     const onChangeTaskTitle = (e: ChangeEvent<HTMLInputElement>) => {
         setError(false)
@@ -58,4 +58,4 @@ export function AddItemForm(props: AddItemFormPropsType) {
         </div>
     )
 
-}
+})

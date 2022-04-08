@@ -1,4 +1,4 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import React, {useState} from 'react';
 import './App.css';
 import {TaskType, Todolist} from "./Todolist";
 import {v1} from "uuid";
@@ -72,6 +72,12 @@ function App() {
             task.isDone = isDone
             setTasks({...tasksObj})
         }
+
+
+        // setTasks({...tasksObj,tasksObj[todolistID].find(f => f.id === id ? {...f, isDone:isDone}:f)})
+
+
+
 
 
     }
@@ -154,7 +160,7 @@ function App() {
                                     title={t.title}
                                     tasks={tasksForTodolist}
                                     removeTasks={removeTasks}
-                                    addTasks={addItem}
+                                    addItem={addItem}
                                     changeFilter={changeFilter}
                                     changeStatus={changeStatus}
                                     filter={t.filter}
@@ -172,4 +178,3 @@ function App() {
     );
 }
 
-export default App;

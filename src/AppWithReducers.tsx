@@ -31,8 +31,8 @@ export type  TasksTodolistType = {
 
 function AppWithReducers() {
 
-    let todolistID1 = v1()
-    let todolistID2 = v1()
+     let todolistID1 = v1()
+     let todolistID2 = v1()
 
     let [todolists, dispatchTodolistsReducer] = useReducer(todolistsReducer, [
         {id: todolistID1, title: 'What to learn', filter: 'all'},
@@ -135,7 +135,7 @@ function AppWithReducers() {
                                         title={t.title}
                                         tasks={tasksForTodolist}
                                         removeTasks={removeTasks}
-                                        addTasks={addItem}
+                                        addItem={addItem}
                                         changeFilter={changeFilter}
                                         changeStatus={changeStatus}
                                         filter={t.filter}
