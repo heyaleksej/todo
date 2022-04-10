@@ -66,8 +66,8 @@ function AppWithReducers() {
     const changeFilter = (todolistID: string, value: FilterValuesType) => {
         dispatchTodolistsReducer(changeFilterAC(todolistID, value))
     }
-    const changeStatus = (id: string, isDone: boolean, todolistID: string) => {
-        dispatchTasksReducer(changeTaskStatusAC(id, isDone, todolistID))
+    const changeStatus = (todolistID: string, id: string, isDone: boolean ) => {
+        dispatchTasksReducer(changeTaskStatusAC(todolistID,id, isDone))
 
 
     }
@@ -153,4 +153,3 @@ function AppWithReducers() {
     );
 }
 
-export default AppWithReducers;

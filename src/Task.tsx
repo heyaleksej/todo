@@ -6,47 +6,44 @@ import {Delete} from "@material-ui/icons";
 
 
 export type PropsType = {
-    changeStatus: (id: string, isDone: boolean, todolistID: string) => void
+    changeStatus: (todolistID: string, id: string, isDone: boolean, ) => void
     changeTaskTitle: (todolistID: string, id: string, newTitle: string) => void
     removeTasks: (id: string, todolistID: string) => void
     todolistID: string
-    task: TaskType
+    t: TaskType
 
 
 
 }
 
-export const Task = React.memo((props: PropsType) => {
+export const Task = React.memo(({changeStatus,changeTaskTitle,removeTasks,todolistID,t}: PropsType) => {
 
-    const onChangeStatusHandler = useCallback((id: string, e: ChangeEvent<HTMLInputElement>, todolistID: string) => {
-        props.changeStatus(id, e.currentTarget.checked, todolistID)
-    }, [props.changeStatus])
+    const onChangeStatusHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+        changeStatus(todolistID, t.id, e.currentTarget.checked)
+    }, [changeStatus, t.id, todolistID])
 
-    const onChangeTaskTitleObertka = useCallback((id: string, newTitle: string) => {
-        props.changeTaskTitle(props.todolistID, id, newTitle)
-    }, [props.changeTaskTitle, props.todolistID])
+    const onChangeTaskTitleObertka = useCallback((newTitle: string) => {
+        changeTaskTitle(todolistID, t.id, newTitle)
+    }, [changeTaskTitle, todolistID, t.id])
 
-    const removeTaskHandler = useCallback((id: string, todolistID: string) => {
-        props.removeTasks(id, todolistID)
-    }, [props.removeTasks])
+    const removeTaskHandler = useCallback(() => {
+        removeTasks(t.id, todolistID)
+    }, [removeTasks, t.id, todolistID])
 
-    console.log('TodoMap')
-    return <div key={props.task.id}>
+    console.log('single task')
+    return <div key={t.id}>
         <Checkbox
             color="default"
-            checked={props.task.isDone}
-            onChange={(e) => onChangeStatusHandler(props.task.id, e, props.todolistID)}
+            checked={t.isDone}
+            onChange={(e) => onChangeStatusHandler(e)}
 
         />
         <EditableSpan
-            title={props.task.title}
-            onChange={(newTitle) => {
-                onChangeTaskTitleObertka(props.task.id, newTitle)
-            }}/>
+            title={t.title}
+            onChange={onChangeTaskTitleObertka}/>
 
-        <IconButton onClick={() => {
-            removeTaskHandler(props.task.id, props.todolistID)
-        }}>
+        <IconButton onClick={
+            removeTaskHandler}>
             <Delete/>
         </IconButton>
     </div>

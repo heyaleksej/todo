@@ -65,7 +65,7 @@ function App() {
         setTodolists(todolists.map(m => m.id === todolistID ? {...m, filter: value} : m))
 
     }
-    const changeStatus = (id: string, isDone: boolean, todolistID: string) => {
+    const changeStatus = ( todolistID: string, id: string, isDone: boolean) => {
         let tasks = tasksObj[todolistID]
         let task = tasks.find(f => f.id === id)
         if (task) {

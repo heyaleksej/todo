@@ -1,6 +1,6 @@
-import {TasksTodolistType, TodolistsType} from "../AppWithReducers";
+import {TasksTodolistType} from "../AppWithReducers";
 import {v1} from "uuid";
-import {addTodolistACType, removeTodolistACType, todolistID1, todolistID2} from "./todolists-reducer";
+import {addTodolistACType, removeTodolistACType} from "./todolists-reducer";
 
 type ActionTypes = removeTaskACType
     | addTaskACType
@@ -37,13 +37,13 @@ export const addTaskAC = (title: string, todolistId: string) => {
     } as const
 }
 
-export const changeTaskStatusAC = (taskId: string, value: boolean, todolistId: string) => {
+export const changeTaskStatusAC = (todolistId: string, taskId: string, value: boolean) => {
     return {
         type: 'CHANGE-STATUS',
         payload: {
+            todolistId,
             taskId,
-            value,
-            todolistId
+            value
         }
     } as const
 }
@@ -92,7 +92,6 @@ export const tasksReducer = (state: TasksTodolistType = initialState, action: Ac
             // let tasks = stateCopy[action.payload.todolistId];
             // // найдём нужную таску:
             // let task = tasks.find(t => t.id === action.payload.taskId);
-            // //изменим таску, если она нашлась
             // if (task) {
             //     task.isDone = action.payload.value;
             // }

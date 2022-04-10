@@ -36,7 +36,7 @@ function AppWithRedux() {
     //вводим useselector вместо usereducer
 
     const todolists = useSelector<AppRootStateType, Array<TodolistsType>>(state => state.todolists)
-    const tasksObj = useSelector<AppRootStateType, TasksTodolistType>(state => state.tasks)
+    const tasks = useSelector<AppRootStateType, TasksTodolistType>(state => state.tasks)
     const dispatch = useDispatch()
 
 
@@ -50,8 +50,8 @@ function AppWithRedux() {
     const changeFilter = useCallback((todolistID: string, value: FilterValuesType) => {
         dispatch(changeFilterAC(todolistID, value))
     }, [dispatch])
-    const changeStatus = useCallback((id: string, isDone: boolean, todolistID: string) => {
-        dispatch(changeTaskStatusAC(id, isDone, todolistID))
+    const changeStatus = useCallback((todolistID: string, id: string, isDone: boolean ) => {
+        dispatch(changeTaskStatusAC(todolistID, id, isDone))
     }, [dispatch])
 
     const removeTodolist = useCallback((todolistID: string) => {
@@ -98,10 +98,12 @@ function AppWithRedux() {
                 <Grid container spacing={10}>
                     {todolists.map(t => {
 
-                        let tasksForTodolist = tasksObj[t.id]
+                        let allTodolistTasks = tasks[t.id];
+                        let tasksForTodolist = allTodolistTasks
 
                         return (<Grid item key={t.id}>
                                 <Paper style={{padding: '20px'}}>
+
 
                                     <Todolist
                                         key={t.id}
