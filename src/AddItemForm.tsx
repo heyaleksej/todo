@@ -46,7 +46,7 @@ export const AddItemForm = React.memo( (props: AddItemFormPropsType)=> {
                 value={newTaskTitle}
                 onChange={onChangeTaskTitle}
                 onKeyPress={onKeyPressHandler}
-                error={!!error}
+                error={error}
                 helperText={error}
 
 
